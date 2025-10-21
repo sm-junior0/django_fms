@@ -1,0 +1,68 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}Farmers List - Farmer Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h2>👥 All Farmers</h2>
+                <p>Total farmers: {{ farmers.count }}</p>
+            </div>
+            <div>
+                <a href="{% url 'mark_attendance' %}" class="btn" style="background: #28a745;">
+                    Mark Attendance
+                </a>
+                <a href="{% url 'farmer_list_api' %}" class="btn btn-secondary" target="_blank">
+                    View JSON API
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if farmers %}
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Farm</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>Gender</th>
+                            <th>Employment</th>
+                            <!-- <th>Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for farmer in farmers %}
+                        <tr>
+                            <td>{{ farmer.id }}</td>
+                            <td>{{ farmer.name }}</td>
+                            <td>{{ farmer.farm }}</td>
+                            <td>{{ farmer.phone }}</td>
+                            <td>{{ farmer.email }}</td>
+                            <td>{{ farmer.get_gender_display }}</td>
+                            <td>{{ farmer.get_employment_type_display }}</td>
+                            <!-- <td>
+                                <a href="{% url 'farmer_detail' farmer.id %}" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">View</a>
+                                <a href="{% url 'farmer_update' farmer.id %}" class="btn" style="padding: 8px 15px; font-size: 0.9rem;">Edit</a>
+                                <a href="{% url 'farmer_delete' farmer.id %}" class="btn btn-danger" style="padding: 8px 15px; font-size: 0.9rem;">Delete</a>
+                            </td> -->
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div style="text-align: center; padding: 40px;">
+                <h3 style="color: #6c757d; margin-bottom: 20px;">No farmers found</h3>
+                <p style="color: #6c757d; margin-bottom: 30px;">Start by adding your first farmer to the system.</p>
+                <a href="{% url 'farmer_create' %}" class="btn">➕ Add First Farmer</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

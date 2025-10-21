@@ -1,0 +1,61 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}{{ farmer.name }} - Farmer Details{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>👤 Farmer Details</h2>
+        <p>Complete information about {{ farmer.name }}</p>
+    </div>
+    <div class="card-body">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+            <div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: #495057; margin-bottom: 15px;">📋 Basic Information</h3>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">ID:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.id }}</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Full Name:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.name }}</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Farm Name:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.farm }}</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Gender:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.get_gender_display }}</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Employment Type:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.get_employment_type_display }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <h3 style="color: #495057; margin-bottom: 15px;">📞 Contact Information</h3>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Phone:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.phone }}</span>
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <strong style="color: #6c757d;">Email:</strong>
+                        <span style="margin-left: 10px;">{{ farmer.email }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 30px; text-align: center;">
+            <a href="{% url 'farmer_update' farmer.id %}" class="btn">✏️ Edit Farmer</a>
+            <a href="{% url 'farmer_delete' farmer.id %}" class="btn btn-danger">🗑️ Delete Farmer</a>
+            <a href="{% url 'farmer_list' %}" class="btn btn-secondary">⬅️ Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

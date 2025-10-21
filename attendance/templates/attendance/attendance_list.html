@@ -1,0 +1,56 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}Attendance Records{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Attendance Records</h2>
+        <p>Total: {{ total_records }}</p>
+    </div>
+    <div class="card-body">
+        <!-- Simple Date Filter -->
+        <form method="get" style="margin-bottom: 20px;">
+            <label>Filter by Date:</label>
+            <input type="date" name="date" value="{{ date_filter }}">
+            <button type="submit" class="btn">Filter</button>
+            <a href="{% url 'attendance_list' %}" class="btn btn-secondary">Show All</a>
+        </form>
+
+        {% if attendance_by_date %}
+            {% for date, records in attendance_by_date.items %}
+                <div style="margin-bottom: 30px; border: 1px solid #ddd; padding: 15px;">
+                    <h3>{{ date|date:"F d, Y" }}</h3>
+                    <p>Present: {{ records|length }} farmers</p>
+                    
+                    {% if records %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Farm</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in records %}
+                                <tr>
+                                    <td>{{ record.farmer.name }}</td>
+                                    <td>{{ record.farmer.farm }}</td>
+                                    <td style="color: green;">Present</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No farmers present</p>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No attendance records found.</p>
+            <a href="{% url 'mark_attendance' %}" class="btn">Mark Attendance</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

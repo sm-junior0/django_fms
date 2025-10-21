@@ -1,0 +1,65 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}Mark Attendance{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Mark Attendance</h2>
+        <p>{{ today|date:"F d, Y" }}</p>
+    </div>
+    <div class="card-body">
+        {% if farmers %}
+        <form method="post">
+            {% csrf_token %}
+            
+            <div style="margin-bottom: 15px;">
+                <button type="button" onclick="selectAll()" class="btn btn-secondary">Select All</button>
+                <button type="button" onclick="deselectAll()" class="btn btn-secondary">Clear All</button>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Present</th>
+                        <th>Name</th>
+                        <th>Farm</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for farmer in farmers %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" 
+                                   name="farmers" 
+                                   value="{{ farmer.id }}" 
+                                   {% if farmer.id in attended_farmer_ids %}checked{% endif %}>
+                        </td>
+                        <td>{{ farmer.name }}</td>
+                        <td>{{ farmer.farm }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn">Save Attendance</button>
+                <a href="{% url 'attendance_list' %}" class="btn btn-secondary">View Records</a>
+                <a href="{% url 'farmer_list' %}" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+        {% else %}
+        <p>No farmers found. <a href="{% url 'farmer_create' %}">Add farmers first</a>.</p>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+function selectAll() {
+    document.querySelectorAll('input[name="farmers"]').forEach(cb => cb.checked = true);
+}
+function deselectAll() {
+    document.querySelectorAll('input[name="farmers"]').forEach(cb => cb.checked = false);
+}
+</script>
+{% endblock %}

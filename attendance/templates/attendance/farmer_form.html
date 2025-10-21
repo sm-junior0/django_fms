@@ -1,0 +1,45 @@
+{% extends 'attendance/base.html' %}
+
+{% block title %}{{ action }} Farmer - Farmer Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{% if action == 'Create' %}➕ Add New Farmer{% else %}✏️ Update Farmer{% endif %}</h2>
+        <p>{% if action == 'Create' %}Fill in the details to add a new farmer{% else %}Update the farmer information{% endif %}</p>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.non_field_errors %}
+                <div class="alert alert-error">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <div style="color: #dc3545; font-size: 0.9rem; margin-top: 5px;">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                    {% if field.help_text %}
+                        <small style="color: #6c757d; font-size: 0.9rem;">{{ field.help_text }}</small>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <div style="margin-top: 30px;">
+                <button type="submit" class="btn">
+                    {% if action == 'Create' %}➕ Add Farmer{% else %}💾 Update Farmer{% endif %}
+                </button>
+                <a href="{% url 'farmer_list' %}" class="btn btn-secondary">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
